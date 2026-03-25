@@ -1,0 +1,17 @@
+# Changes here will be overwritten by Copier
+_commit: 5.0.2
+_src_path: https://github.com/DiamondLightSource/python-copier-template.git
+author_email: shreelakshmi.iyengar@diamond.ac.uk
+author_name: Shreelakshmi Iyengar
+description: Toy FastAPI to practise using technologies used by BlueAPI
+distribution_name: toy-fast-api
+docker: true
+docker_debug: false
+docs_type: README
+git_platform: github.com
+github_org: shree-iyengar-dls
+package_name: toy_fast_api
+pypi: false
+repo_name: toy-fast-api
+strict_typing: true
+type_checker: pyright
