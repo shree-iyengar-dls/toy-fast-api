@@ -1,5 +1,5 @@
-def f(input_number: int):
-    if input_number % 2 == 0:
+def odd_or_even_test(n: int):
+    if n % 2 == 0:
         print("Even")
     else:
         print("Odd")
