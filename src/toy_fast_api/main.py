@@ -10,6 +10,6 @@ async def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/")
+@app.get("/odd_or_even/{n}")
 async def odd_or_even(n: int):
-    return {n: odd_or_even_test(n)}
+    return {"n": n, "odd_or_even": odd_or_even_test(n)}
