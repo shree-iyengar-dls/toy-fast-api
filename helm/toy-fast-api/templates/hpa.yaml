@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "deployment_stuff.fullname" . }}
+  name: {{ include "toy-fast-api.fullname" . }}
   labels:
-    {{- include "deployment_stuff.labels" . | nindent 4 }}
+    {{- include "toy-fast-api.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "deployment_stuff.fullname" . }}
+    name: {{ include "toy-fast-api.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

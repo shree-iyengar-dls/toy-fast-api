@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "deployment_stuff.fullname" . }}
+  name: {{ include "toy-fast-api.fullname" . }}
   labels:
-    {{- include "deployment_stuff.labels" . | nindent 4 }}
+    {{- include "toy-fast-api.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "deployment_stuff.selectorLabels" . | nindent 6 }}
+      {{- include "toy-fast-api.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "deployment_stuff.labels" . | nindent 8 }}
+        {{- include "toy-fast-api.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "deployment_stuff.serviceAccountName" . }}
+      serviceAccountName: {{ include "toy-fast-api.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}

@@ -2,9 +2,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "deployment_stuff.fullname" . }}
+  name: {{ include "toy-fast-api.fullname" . }}
   labels:
-    {{- include "deployment_stuff.labels" . | nindent 4 }}
+    {{- include "toy-fast-api.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "deployment_stuff.fullname" $ }}
+                name: {{ include "toy-fast-api.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

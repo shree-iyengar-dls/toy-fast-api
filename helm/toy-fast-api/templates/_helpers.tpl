@@ -33,9 +33,9 @@ Create chart name and version as used by the chart label.
 {{/*
 Common labels
 */}}
-{{- define "deployment_stuff.labels" -}}
-helm.sh/chart: {{ include "deployment_stuff.chart" . }}
-{{ include "deployment_stuff.selectorLabels" . }}
+{{- define "toy-fast-api.labels" -}}
+helm.sh/chart: {{ include "toy-fast-api.chart" . }}
+{{ include "toy-fast-api.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "deployment_stuff.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "deployment_stuff.name" . }}
+{{- define "toy-fast-api.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "toy-fast-api.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "deployment_stuff.serviceAccountName" -}}
+{{- define "toy-fast-api.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "deployment_stuff.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "toy-fast-api.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
