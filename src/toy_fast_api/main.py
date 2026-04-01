@@ -22,6 +22,6 @@ async def read_root():
 
 
 @app.get("/odd_or_even/{n}")
-async def odd_or_even(n: int):
+def odd_or_even(n: int):
     LOGGER.info(f"Check if {n} is odd or even.")
     return {"n": n, "odd_or_even": odd_or_even_test(n)}
