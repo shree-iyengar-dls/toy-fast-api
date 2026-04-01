@@ -63,8 +63,7 @@ ingress:
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: shree-toy-fast-api.diamond.ac.uk
+  host: shree-toy-fast-api.diamond.ac.uk
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
