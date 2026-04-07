@@ -13,7 +13,7 @@ LOGGER = logging.getLogger(__name__)
 
 def start():
     LOGGER.info("Starting the service.")
-    uvicorn.run(app, host="0.0.0.0", port=80)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
 @app.get("/")
