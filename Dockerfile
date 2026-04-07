@@ -41,4 +41,4 @@ ENV PATH=/app/.venv/bin:$PATH
 
 # change this entrypoint if it is not the same as the repo
 ENTRYPOINT ["toy-fast-api"]
-CMD [""run-fast-api", "--host", "0.0.0.0", "--port", "8000""]
+CMD ["run-fast-api", "--host", "0.0.0.0", "--port", "8000"]
