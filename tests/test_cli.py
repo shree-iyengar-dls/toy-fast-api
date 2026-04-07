@@ -1,9 +1,24 @@
-import subprocess
-import sys
+from typer.testing import CliRunner
 
 from toy_fast_api import __version__
+from toy_fast_api.cli import cli_app
+
+runner = CliRunner()
 
 
-def test_cli_version():
-    cmd = [sys.executable, "-m", "toy_fast_api", "--version"]
-    assert subprocess.check_output(cmd).decode().strip() == __version__
+def test_callback():
+    result = runner.invoke(cli_app, ["--version"])
+    assert result.exit_code == 0
+    assert result.stdout.strip() == f"Version: {__version__}"
+
+
+def test_check_even():
+    result = runner.invoke(cli_app, ["check", "2"])
+    assert result.exit_code == 0
+    assert "'odd_or_even': 'Even'" in result.stdout
+
+
+def test_check_odd():
+    result = runner.invoke(cli_app, ["check", "3"])
+    assert result.exit_code == 0
+    assert "'odd_or_even': 'Odd'" in result.stdout
