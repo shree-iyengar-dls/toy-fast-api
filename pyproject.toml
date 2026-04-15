@@ -14,6 +14,8 @@ classifiers = [
 description = "Toy FastAPI to practise using technologies used by BlueAPI"
 dependencies = [
     "fastapi>=0.135.2",
+    "jwt>=1.4.0",
+    "requests>=2.33.1",
     "typer>=0.24.1",
     "uvicorn>=0.42.0",
 ] # Add project dependencies here, e.g. ["click", "numpy"]

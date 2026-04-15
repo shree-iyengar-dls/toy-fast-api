@@ -1,15 +1,68 @@
-from pydantic import BaseModel
+from functools import cached_property
+from typing import Any, cast
+
+import requests
+from pydantic import BaseModel, Field
 
 
-class CustomOIDC(BaseModel):  # maybe don't need this anymore
-    issuer_url: str = "https://identity-test.diamond.ac.uk/realms/dls"
-    client_id: str = "ToyFastAPI"
-    authorization_endpoint: str = (
-        "https://identity-test.diamond.ac.uk/realms/dls/protocol/openid-connect/auth"
+class CustomOIDC(BaseModel):
+    well_known_url: str = Field(
+        description="URL to fetch OIDC config from the provider"
     )
-    token_endpoint: str = (
-        "https://identity-test.diamond.ac.uk/realms/dls/protocol/openid-connect/token"
+    client_id: str = Field(description="Client ID")
+    client_audience: str = Field(
+        description="Client Audience(s)", default="toy-fast-api"
     )
-    jwks_uri: str = (
-        "https://identity-test.diamond.ac.uk/realms/dls/protocol/openid-connect/certs"
+    logout_redirect_endpoint: str = Field(
+        description="The oidc endpoint required to logout", default=""
+    )
+
+    @cached_property
+    def _config_from_oidc_url(self) -> dict[str, Any]:
+        response: requests.Response = requests.get(self.well_known_url)
+        response.raise_for_status()
+        return response.json()
+
+    @cached_property
+    def device_authorization_endpoint(self) -> str:
+        return cast(
+            str, self._config_from_oidc_url.get("device_authorization_endpoint")
+        )
+
+    @cached_property
+    def token_endpoint(self) -> str:
+        return cast(str, self._config_from_oidc_url.get("token_endpoint"))
+
+    @cached_property
+    def issuer(self) -> str:
+        return cast(str, self._config_from_oidc_url.get("issuer"))
+
+    @cached_property
+    def authorization_endpoint(self) -> str:
+        return cast(str, self._config_from_oidc_url.get("authorization_endpoint"))
+
+    @cached_property
+    def jwks_uri(self) -> str:
+        return cast(str, self._config_from_oidc_url.get("jwks_uri"))
+
+    @cached_property
+    def end_session_endpoint(self) -> str:
+        return cast(str, self._config_from_oidc_url.get("end_session_endpoint"))
+
+    @cached_property
+    def id_token_signing_alg_values_supported(self) -> list[str]:
+        return cast(
+            list[str],
+            self._config_from_oidc_url.get("id_token_signing_alg_values_supported"),
+        )
+
+
+class ApplicationConfig(BaseModel):
+    oidc: CustomOIDC
+
+
+if __name__ == "__main__":
+    test_oidc = CustomOIDC(
+        well_known_url="http://localhost:8081/realms/master/.well-known/openid-configuration",
+        client_id="ToyFastAPI",
     )
