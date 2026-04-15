@@ -15,7 +15,7 @@ ALGORITHM = "HS256"
 LOGGER = logging.getLogger(__name__)
 
 
-def decode_access_token(config: CustomOIDC) -> None:
+def decode_access_token(config: CustomOIDC):
     jwkclient = jwt.PyJWKClient(config.jwks_uri)
     oauth_scheme = OAuth2AuthorizationCodeBearer(
         authorizationUrl=config.authorization_endpoint,
