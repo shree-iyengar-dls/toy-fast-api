@@ -11,7 +11,6 @@ from toy_fast_api.odd_or_even import odd_or_even_test
 
 secure_router = APIRouter()
 app = FastAPI()
-ALGORITHM = "HS256"
 LOGGER = logging.getLogger(__name__)
 
 
@@ -43,13 +42,13 @@ def get_app(config: ApplicationConfig):
         title="Toy-FastAPI",
         summary="Toy-FastAPI that checks if a number is odd or even.",
     )
-    dependencies = []
     if config.oidc:
-        dependencies.append(Depends(decode_access_token(config.oidc)))
         app.swagger_ui_init_oauth = {
             "clientId": "NOT_SUPPORTED",
         }
-    app.include_router(secure_router, dependencies=dependencies)
+    app.include_router(
+        secure_router, dependencies=Depends(decode_access_token(config.oidc))
+    )
     return app
 
 
