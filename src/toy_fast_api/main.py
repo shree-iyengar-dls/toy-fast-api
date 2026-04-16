@@ -47,7 +47,7 @@ def get_app(config: ApplicationConfig):
             "clientId": "NOT_SUPPORTED",
         }
     app.include_router(
-        secure_router, dependencies=Depends(decode_access_token(config.oidc))
+        secure_router, dependencies=[Depends(decode_access_token(config.oidc))]
     )
     return app
 
