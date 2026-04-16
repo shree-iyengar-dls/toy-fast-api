@@ -2,6 +2,7 @@ from typing import Annotated
 
 import typer
 
+from toy_fast_api.config import ApplicationConfig, CustomOIDC
 from toy_fast_api.main import odd_or_even, start
 
 from . import __version__
@@ -26,7 +27,14 @@ def callback(
 
 @cli_app.command()
 def run_fast_api():
-    start()
+    start(
+        ApplicationConfig(
+            oidc=CustomOIDC(
+                well_known_url="http://identity-test.diamond.ac.uk/realms/dls/.well-known/openid-configuration",
+                client_id="ToyFastAPI",
+            )
+        )
+    )
 
 
 @cli_app.command()
