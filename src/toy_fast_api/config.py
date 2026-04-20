@@ -59,10 +59,3 @@ class CustomOIDC(BaseModel):
 
 class ApplicationConfig(BaseModel):
     oidc: CustomOIDC
-
-
-if __name__ == "__main__":
-    test_oidc = CustomOIDC(
-        well_known_url="http://localhost:8081/realms/master/.well-known/openid-configuration",
-        client_id="ToyFastAPI",
-    )
