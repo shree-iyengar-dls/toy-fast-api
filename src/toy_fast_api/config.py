@@ -56,6 +56,12 @@ class CustomOIDC(BaseModel):
             self._config_from_oidc_url.get("id_token_signing_alg_values_supported"),
         )
 
+    def keys(self):
+        a = cast(str, self._config_from_oidc_url.get("jwks_uri"))
+        b = requests.get(a)
+        b.raise_for_status()
+        return b.json().get("keys", [])
+
 
 class ApplicationConfig(BaseModel):
     oidc: CustomOIDC

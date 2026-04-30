@@ -30,8 +30,9 @@ def run_fast_api():
     start(
         ApplicationConfig(
             oidc=CustomOIDC(
-                well_known_url="http://identity-test.diamond.ac.uk/realms/dls/.well-known/openid-configuration",
+                well_known_url="https://identity-test.diamond.ac.uk/realms/dls/.well-known/openid-configuration",
                 client_id="ToyFastAPI",
+                client_audience="account",
             )
         )
     )

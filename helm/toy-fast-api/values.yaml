@@ -7,13 +7,13 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: ghcr.io/shree-iyengar-dls/toy-fast-api
+  repository: ghcr.io/shree-iyengar-dls/toy-fast-api-2
   # This sets the pull policy for images.
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v1.10"
+  #tag: "v1.10"
 
-# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 # This is to override the chart name.
 nameOverride: ""
@@ -81,14 +81,14 @@ resources: {}
   #   memory: 128Mi
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
+# livenessProbe:
+#   httpGet:
+#     path: /
+#     port: http
+# readinessProbe:
+#   httpGet:
+#     path: /
+#     port: http
 
 # This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
@@ -123,13 +123,13 @@ oauth2:
     - name: OAUTH2_PROXY_CLIENT_SECRET
       valueFrom:
         secretKeyRef:
-          name: toy-fast-api-secret
-          key: client-secret
+          name: toy-fast-api-secret-2
+          key: client_secret
     - name: OAUTH2_PROXY_COOKIE_SECRET
       valueFrom:
         secretKeyRef:
-          name: toy-fast-api-secret
-          key: cookie-secret
+          name: toy-fast-api-secret-2
+          key: cookie_secret
   config:
     configFile: |-
       skip_provider_button = true
@@ -156,9 +156,9 @@ oauth2:
       upstreamConfig:
         proxyRawPath: true
         upstreams:
-          - id:
-            path:
-            uri:
+          - id: toy-fast-api
+            path: /
+            uri: http://toy-fast-api.xxu39114:8000
       providers:
         - provider: oidc
           id: identity-test.diamond.ac.uk

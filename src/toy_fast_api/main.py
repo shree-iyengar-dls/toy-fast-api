@@ -1,10 +1,10 @@
 import logging
 from typing import Any
 
-import jwt
 import uvicorn
 from fastapi import APIRouter, Depends, FastAPI, Request
 from fastapi.security import OAuth2AuthorizationCodeBearer
+from jose import jwt
 
 from toy_fast_api.config import ApplicationConfig, CustomOIDC
 from toy_fast_api.odd_or_even import odd_or_even_test
@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 def decode_access_token(config: CustomOIDC):
-    jwkclient = jwt.PyJWKClient(config.jwks_uri)
+
     oauth_scheme = OAuth2AuthorizationCodeBearer(
         authorizationUrl=config.authorization_endpoint,
         tokenUrl=config.token_endpoint,
@@ -23,12 +23,11 @@ def decode_access_token(config: CustomOIDC):
     )
 
     def inner(request: Request, access_token: str = Depends(oauth_scheme)):
-        signing_key = jwkclient.get_signing_key_from_jwt(access_token)
+        # signing_key = jwkclient.get_signing_key_from_jwt(access_token)
         decoded: dict[str, Any] = jwt.decode(
             access_token,
-            signing_key.key,
+            config.keys(),  # type: ignore
             algorithms=config.id_token_signing_alg_values_supported,
-            verify=True,
             audience=config.client_audience,
             issuer=config.issuer,
         )
