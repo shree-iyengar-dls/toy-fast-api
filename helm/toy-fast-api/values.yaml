@@ -123,12 +123,12 @@ oauth2:
     - name: OAUTH2_PROXY_CLIENT_SECRET
       valueFrom:
         secretKeyRef:
-          name: toy-fast-api-secret-2
+          name: my-secret
           key: client_secret
     - name: OAUTH2_PROXY_COOKIE_SECRET
       valueFrom:
         secretKeyRef:
-          name: toy-fast-api-secret-2
+          name: my-secret
           key: cookie_secret
   config:
     configFile: |-
