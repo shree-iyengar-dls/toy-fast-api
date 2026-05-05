@@ -65,18 +65,9 @@ spec:
           args:
             - run
             - --server
-            - --diagnostic-addr
-            - 0.0.0.0.8282
-            - --addr
-            - 0.0.0.0.8181
+            - --diagnostic-addr=:8282
+            - --addr=:8181
             - /etc/opa-config/policy.rego
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-            - name: diagnostic
-              containerPort: 8282
-              protocol: TCP
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
@@ -92,12 +83,12 @@ spec:
           volumeMounts:
             - name: opa-config
               mountPath: /etc/opa-config              
-      {{- with .Values.volumes }}
       volumes:
         - name: opa-config
           configMap:
             name: opa-config        
-        {{- toYaml . | nindent 8 }}
+        {{- with .Values.volumes }}
+          {{- toYaml . | nindent 2}}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

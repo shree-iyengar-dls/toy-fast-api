@@ -4,4 +4,4 @@ metadata:
   name: opa-config
 data:
   policy.rego: |
-    {{ .Values.opa.config.policy | indent 2 }}
+{{ .Values.opa.config.policy | indent 4 }}
