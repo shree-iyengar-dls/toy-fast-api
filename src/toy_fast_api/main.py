@@ -1,10 +1,12 @@
 import logging
 from typing import Any
 
+import requests
 import uvicorn
-from fastapi import APIRouter, Depends, FastAPI, Request
+from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import jwt
+from requests import Response
 
 from toy_fast_api.config import ApplicationConfig, CustomOIDC
 from toy_fast_api.odd_or_even import odd_or_even_test
@@ -14,8 +16,21 @@ app = FastAPI()
 LOGGER = logging.getLogger(__name__)
 
 
-def decode_access_token(config: CustomOIDC):
+def check_opa(
+    subject: str,
+    response: Response,
+) -> bool:
+    response = requests.post(
+        "http://opa:8181/v1/data/httpapi/authz/allow",
+        data={"input": {"subject": subject}},
+    )
+    if response.status_code != 200:
+        raise HTTPException(status_code=500)
+    result = response.json()
+    return result.get("result", False)
 
+
+def decode_access_token(config: CustomOIDC):
     oauth_scheme = OAuth2AuthorizationCodeBearer(
         authorizationUrl=config.authorization_endpoint,
         tokenUrl=config.token_endpoint,

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opa-config
+data:
+  policy.rego: |
+    {{ .Values.opa.config.policy | indent 2 }}

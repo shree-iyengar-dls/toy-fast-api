@@ -60,8 +60,43 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+        - name: opa-config
+          image: docker.io/openpolicyagent/opa
+          args:
+            - run
+            - --server
+            - --diagnostic-addr
+            - 0.0.0.0.8282
+            - --addr
+            - 0.0.0.0.8181
+            - /etc/opa-config/policy.rego
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+            - name: diagnostic
+              containerPort: 8282
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: opa-config
+              mountPath: /etc/opa-config              
       {{- with .Values.volumes }}
       volumes:
+        - name: opa-config
+          configMap:
+            name: opa-config        
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}

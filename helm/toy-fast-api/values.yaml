@@ -182,3 +182,15 @@ oauth2:
           values:
             - claimSource:
                 claim: access_token
+
+opa:
+  enabled: true
+  config:
+    policy: |
+      package httpapi.authz
+
+      default allow = false
+
+      allow {
+        input.subject == "xxu39114"
+      }
