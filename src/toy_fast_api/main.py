@@ -6,7 +6,6 @@ import uvicorn
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Request
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from jose import jwt
-from requests import Response
 
 from toy_fast_api.config import ApplicationConfig, CustomOIDC
 from toy_fast_api.odd_or_even import odd_or_even_test
@@ -18,10 +17,9 @@ LOGGER = logging.getLogger(__name__)
 
 def check_opa(
     subject: str,
-    response: Response,
 ) -> bool:
     response = requests.post(
-        "http://opa:8181/v1/data/httpapi/authz/allow",
+        "http://opa:8181/",
         data={"input": {"subject": subject}},
     )
     if response.status_code != 200:
@@ -61,7 +59,8 @@ def get_app(config: ApplicationConfig):
             "clientId": "NOT_SUPPORTED",
         }
     app.include_router(
-        secure_router, dependencies=[Depends(decode_access_token(config.oidc))]
+        secure_router,
+        dependencies=[Depends(decode_access_token(config.oidc))],
     )
     return app
 

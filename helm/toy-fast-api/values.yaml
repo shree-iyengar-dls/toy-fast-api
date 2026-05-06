@@ -191,6 +191,6 @@ opa:
 
       default allow = false
 
-      allow {
+      allow if {
         input.subject == "xxu39114"
       }
